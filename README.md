@@ -8,6 +8,8 @@ A full-stack expense tracker where you can create an account, log your spending,
 
 ![Expenses page](docs/screenshots/expenses.png)
 
+![Dashboard](docs/screenshots/dashboard.png)
+
 ## Features
 
 - Register and log in with JWT authentication; every user sees only their own expenses
@@ -17,6 +19,7 @@ A full-stack expense tracker where you can create an account, log your spending,
 - Animated home page and a split-screen login page
 - Passwords are stored hashed with BCrypt
 - Data stored in MySQL through a REST API
+- Dashboard with a 6-month spending bar chart and a category donut you can switch month by month
 
 ## Tech Stack
 
@@ -83,7 +86,6 @@ Open `http://localhost:5173`, create an account and add your first expense.
 
 ## Roadmap
 
-- Dashboard page with monthly charts
 - Monthly budget with warnings
 - Deployment
 

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Expenses from "./pages/Expenses";
+import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import { isLoggedIn } from "./api/expenseApi";
 
@@ -32,6 +33,11 @@ export default function App() {
           element={<GuestOnly><Auth mode="register" /></GuestOnly>}
         />
         <Route path="*" element={<Navigate to="/" replace />} />
+
+        <Route
+          path="/dashboard"
+          element={<Protected><Dashboard /></Protected>}
+        />
       </Routes>
     </BrowserRouter>
   );

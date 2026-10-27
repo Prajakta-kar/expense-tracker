@@ -23,6 +23,9 @@ export default function Navbar() {
           <ul className="navbar-nav ms-auto align-items-md-center gap-md-3">
             <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/expenses">Expenses</Link></li>
+            {loggedIn && (
+              <li className="nav-item"><Link className="nav-link" to="/dashboard">Dashboard</Link></li>
+            )}
             {loggedIn ? (
               <>
                 {firstName && (

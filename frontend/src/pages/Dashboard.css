@@ -1,0 +1,77 @@
+.db-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.5rem;
+    height: 100%;
+    box-shadow: 0 6px 24px rgba(20, 33, 61, 0.08);
+  }
+  .db-card h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+  .db-card h2 span { font-family: "DM Sans", sans-serif; font-weight: 400; font-size: 0.9rem; color: #46537a; }
+  
+  /* bar chart */
+  .db-chart { width: 100%; display: block; }
+  .db-chart text { font-family: "DM Sans", sans-serif; }
+  .db-label { font-size: 14px; fill: #46537a; }
+  .db-val { font-size: 13px; font-weight: 500; fill: var(--ink); transition: opacity 0.5s; }
+  .db-bar {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    transition: transform 0.9s cubic-bezier(.2, .8, .2, 1);
+  }
+  
+  /* donut */
+  .db-donut { position: relative; max-width: 240px; margin: 0 auto 1rem; }
+  .db-donut svg { width: 100%; display: block; }
+  .db-donut-center {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+  }
+  .db-donut-center span { font-size: 0.85rem; color: #46537a; }
+  .db-donut-center strong { font-family: "Bricolage Grotesque", sans-serif; font-size: 1.5rem; }
+  
+  .db-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.55rem; }
+  .db-list li { display: flex; justify-content: space-between; align-items: center; }
+  .db-list li i {
+    display: inline-block; width: 0.65rem; height: 0.65rem;
+    border-radius: 50%; margin-right: 0.5rem;
+  }
+  .db-list b { font-weight: 500; }
+  .db-list small { color: #46537a; font-weight: 400; margin-left: 0.35rem; }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .db-bar, .db-val { transition: none; }
+  }
+
+
+  /* month picker for the donut */
+.db-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .db-head h2 { margin: 0; }
+  .db-nav { display: flex; align-items: center; gap: 0.5rem; font-weight: 500; }
+  .db-nav span { min-width: 8.5rem; text-align: center; }
+  .db-nav button {
+    width: 34px; height: 34px; border: 0; border-radius: 50%;
+    background: #eef1fb; color: var(--ink); font-size: 1.3rem; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background 0.2s, color 0.2s;
+  }
+  .db-nav button:hover:not(:disabled) { background: var(--violet); color: #fff; }
+  .db-nav button:disabled { opacity: 0.35; cursor: default; }
+  
+  /* clickable bars */
+  .db-col { cursor: pointer; outline: none; }
+  .db-col:hover .db-bar { filter: brightness(1.08); }
+  .db-col:focus-visible .db-label { text-decoration: underline; }
+  .db-bar { transition: transform 0.9s cubic-bezier(.2, .8, .2, 1), fill 0.25s; }
+  .db-label.on { font-weight: 700; fill: var(--violet); }
+  .db-hint { margin: 0.5rem 0 0; font-size: 0.85rem; color: #6b78a0; text-align: center; }
