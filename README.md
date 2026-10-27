@@ -1,6 +1,6 @@
 # Kharcha - Expense Tracker
 
-A full-stack expense tracker where you can log your spending, sort it by category and see where your money goes. Built with React, Spring Boot and MySQL.
+A full-stack expense tracker where you can create an account, log your spending, sort it by category and see where your money goes. Built with React, Spring Boot and MySQL.
 
 ## Screenshots
 
@@ -10,10 +10,12 @@ A full-stack expense tracker where you can log your spending, sort it by categor
 
 ## Features
 
+- Register and log in with JWT authentication; every user sees only their own expenses
 - Add, edit and delete expenses
 - Filter expenses by category (Food, Rent, Travel, Bills, Fun)
 - Live totals, a category breakdown bar, and summary tiles for the highest expense, the average expense and the top category
-- Animated home page
+- Animated home page and a split-screen login page
+- Passwords are stored hashed with BCrypt
 - Data stored in MySQL through a REST API
 
 ## Tech Stack
@@ -21,14 +23,18 @@ A full-stack expense tracker where you can log your spending, sort it by categor
 | Layer | Technology |
 |---|---|
 | Frontend | React (Vite), Bootstrap, React Router, Axios |
-| Backend | Java 17, Spring Boot, Spring Data JPA, REST APIs |
+| Backend | Java 17, Spring Boot, Spring Data JPA, Spring Security (JWT), REST APIs |
 | Database | MySQL |
 
 ## API Endpoints
 
+Authentication endpoints are open. All expense endpoints need a login token in the `Authorization: Bearer <token>` header.
+
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/api/expenses` | List all expenses |
+| POST | `/api/auth/register` | Create an account and get a token |
+| POST | `/api/auth/login` | Log in and get a token |
+| GET | `/api/expenses` | List your expenses |
 | POST | `/api/expenses` | Add an expense |
 | PUT | `/api/expenses/{id}` | Update an expense |
 | DELETE | `/api/expenses/{id}` | Delete an expense |
@@ -49,10 +55,11 @@ CREATE DATABASE expense_tracker;
 
 ### 2. Run the backend
 
-Create the file `backend/src/main/resources/application-local.properties` with your MySQL password. This file is ignored by Git:
+Create the file `backend/src/main/resources/application-local.properties` with your MySQL password and a secret key for signing login tokens (any random text of at least 32 characters). This file is ignored by Git, so your secrets are never uploaded:
 
 ```properties
 spring.datasource.password=YOUR_MYSQL_PASSWORD
+app.jwt.secret=REPLACE_WITH_A_LONG_RANDOM_TEXT_OF_32_OR_MORE_CHARACTERS
 ```
 
 Then start the server:
@@ -72,12 +79,11 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`.
+Open `http://localhost:5173`, create an account and add your first expense.
 
 ## Roadmap
 
 - Dashboard page with monthly charts
-- User registration and login with JWT
 - Monthly budget with warnings
 - Deployment
 

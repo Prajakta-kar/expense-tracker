@@ -31,4 +31,5 @@ public class Expense {
     private LocalDate date;
 
     private String note;
+    private Long userId;
 }

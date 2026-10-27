@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { isLoggedIn, logout } from "../api/expenseApi";
 import "./Home.css";
 
 const CATEGORIES = [
@@ -86,6 +87,8 @@ function useReveal() {
 }
 
 export default function Home() {
+  const navigate = useNavigate();
+  const loggedIn = isLoggedIn();
   const [ready, setReady] = useState(false);
   const [word, setWord] = useState(0);
   const total = useCountUp(TOTAL);
@@ -144,7 +147,16 @@ export default function Home() {
               <ul className="navbar-nav ms-auto align-items-md-center gap-md-3">
                 <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
                 <li className="nav-item"><Link className="nav-link" to="/expenses">Expenses</Link></li>
-                <li className="nav-item"><Link className="btn kh-btn-dark btn-sm" to="/login">Log in</Link></li>
+                <li className="nav-item">
+             {loggedIn ? (
+                <button type="button" className="btn kh-btn-dark btn-sm"
+                  onClick={() => { logout(); navigate("/login"); }}>
+                  Log out
+                </button>
+                  ) : (
+                <Link className="btn kh-btn-dark btn-sm" to="/login">Log in</Link>
+                    )}
+                 </li>
               </ul>
             </div>
           </div>

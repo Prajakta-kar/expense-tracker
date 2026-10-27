@@ -1,52 +1,72 @@
 package com.kharcha.expensetracker;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/expenses")
-@CrossOrigin(origins = "http://localhost:5173")
 public class ExpenseController {
 
     private final ExpenseRepository repo;
+    private final UserRepository users;
 
-    public ExpenseController(ExpenseRepository repo) {
+    public ExpenseController(ExpenseRepository repo, UserRepository users) {
         this.repo = repo;
+        this.users = users;
+    }
+
+    private Long currentUserId(Jwt jwt) {
+        return users.findByEmail(jwt.getSubject())
+                .map(User::getId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
 
     @GetMapping
-    public List<Expense> getAll() {
-        return repo.findAll();
+    public List<Expense> getAll(@AuthenticationPrincipal Jwt jwt) {
+        return repo.findByUserId(currentUserId(jwt));
     }
 
     @PostMapping
-    public Expense create(@Valid @RequestBody Expense expense) {
+    public Expense create(@Valid @RequestBody Expense expense,
+                          @AuthenticationPrincipal Jwt jwt) {
         expense.setId(null);
+        expense.setUserId(currentUserId(jwt));
         return repo.save(expense);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Expense> update(@PathVariable Long id,
-                                          @Valid @RequestBody Expense updated) {
-        return repo.findById(id).map(e -> {
-            e.setTitle(updated.getTitle());
-            e.setAmount(updated.getAmount());
-            e.setCategory(updated.getCategory());
-            e.setDate(updated.getDate());
-            e.setNote(updated.getNote());
-            return ResponseEntity.ok(repo.save(e));
-        }).orElse(ResponseEntity.notFound().build());
+                                          @Valid @RequestBody Expense updated,
+                                          @AuthenticationPrincipal Jwt jwt) {
+        Optional<Expense> found = repo.findByIdAndUserId(id, currentUserId(jwt));
+        if (found.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Expense e = found.get();
+        e.setTitle(updated.getTitle());
+        e.setAmount(updated.getAmount());
+        e.setCategory(updated.getCategory());
+        e.setDate(updated.getDate());
+        e.setNote(updated.getNote());
+        return ResponseEntity.ok(repo.save(e));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (!repo.existsById(id)) {
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                       @AuthenticationPrincipal Jwt jwt) {
+        Optional<Expense> found = repo.findByIdAndUserId(id, currentUserId(jwt));
+        if (found.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        repo.deleteById(id);
+        repo.delete(found.get());
         return ResponseEntity.noContent().build();
     }
 }
