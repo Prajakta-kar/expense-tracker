@@ -75,3 +75,48 @@
   .db-bar { transition: transform 0.9s cubic-bezier(.2, .8, .2, 1), fill 0.25s; }
   .db-label.on { font-weight: 700; fill: var(--violet); }
   .db-hint { margin: 0.5rem 0 0; font-size: 0.85rem; color: #6b78a0; text-align: center; }
+
+  /* monthly budget card */
+.db-budget {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 6px 24px rgba(20, 33, 61, 0.08);
+    border-left: 6px solid var(--mint);
+  }
+  .db-budget.warn { border-left-color: var(--sun); }
+  .db-budget.over { border-left-color: var(--rose); }
+  .db-budget-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+  .db-budget-head h2 { font-size: 1.25rem; font-weight: 800; margin: 0; }
+  .db-link { border: 0; background: transparent; color: var(--violet); font-weight: 500; padding: 0; cursor: pointer; }
+  .db-link:hover { text-decoration: underline; }
+  .db-link.danger { color: var(--rose); }
+  
+  .db-meter { height: 14px; border-radius: 999px; background: #e8ecf8; overflow: hidden; }
+  .db-meter i {
+    display: block; height: 100%; border-radius: 999px; background: var(--mint);
+    transition: width 1s cubic-bezier(.2, .8, .2, 1);
+  }
+  .db-budget.warn .db-meter i { background: var(--sun); }
+  .db-budget.over .db-meter i { background: var(--rose); }
+  
+  .db-budget-text { margin: 0.75rem 0 0; color: #46537a; }
+  .db-budget-text b { color: var(--ink); }
+  .db-alert { margin: 0.6rem 0 0; padding: 0.6rem 0.9rem; border-radius: 12px; font-weight: 500; }
+  .db-alert.warn { background: #fff1c9; color: #7a5200; }
+  .db-alert.over { background: #ffdde7; color: #a3123f; }
+  
+  .db-budget-form { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
+  .db-budget-form > span { font-family: "Bricolage Grotesque", sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--violet); }
+  .db-budget-form input {
+    width: 10rem; border: 2px solid #e1e6f5; border-radius: 12px;
+    padding: 0.45rem 0.8rem; font-size: 1.05rem; outline: none;
+  }
+  .db-budget-form input:focus { border-color: var(--violet); box-shadow: 0 0 0 0.2rem rgba(91, 61, 245, 0.18); }
+  .kh .db-budget-form .kh-btn-main,
+  .kh .db-budget-form .kh-btn-main:hover {
+    background: var(--violet); border-color: var(--violet); color: #fff;
+  }
+  
+  @media (prefers-reduced-motion: reduce) { .db-meter i { transition: none; } }

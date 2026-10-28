@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { CATEGORIES, getExpenses } from "../api/expenseApi";
+import {
+    CATEGORIES, getExpenses, getBudget, saveBudget, removeBudget,
+  } from "../api/expenseApi";
 import "./Home.css";
 import "./Expenses.css";
 import "./Dashboard.css";
@@ -45,6 +47,10 @@ export default function Dashboard() {
   const [error, setError] = useState("");
   const [ready, setReady] = useState(false);
   const [sel, setSel] = useState(5); // which of the 6 months the donut shows
+  const [budget, setBudget] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState("");
+  const [budgetError, setBudgetError] = useState("");
 
   useEffect(() => {
     getExpenses()
@@ -57,6 +63,10 @@ export default function Dashboard() {
         setError("Could not load your expenses. Is the backend running?");
         setLoading(false);
       });
+  }, []);
+
+  useEffect(() => {
+    getBudget().then(setBudget).catch(() => {});
   }, []);
 
   const stats = useMemo(() => {
@@ -124,6 +134,39 @@ export default function Dashboard() {
     acc += len;
     return seg;
   });
+
+  const startEdit = () => {
+    setDraft(budget ?? "");
+    setBudgetError("");
+    setEditing(true);
+  };
+
+  const submitBudget = async (e) => {
+    e.preventDefault();
+    const value = Number(draft);
+    if (!(value > 0)) return setBudgetError("Enter an amount above 0.");
+    try {
+      setBudget(await saveBudget(value));
+      setBudgetError("");
+      setEditing(false);
+    } catch {
+      setBudgetError("Could not save. Is the backend running?");
+    }
+  };
+
+  const clearBudget = async () => {
+    try {
+      await removeBudget();
+      setBudget(null);
+      setBudgetError("");
+      setEditing(false);
+    } catch {
+      setBudgetError("Could not remove the budget.");
+    }
+  };
+
+  const used = budget ? (stats.thisTotal / budget) * 100 : 0;
+  const level = used > 100 ? "over" : used >= 80 ? "warn" : "ok";
 
   const changeText =
     stats.change === null
@@ -207,6 +250,59 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className={`db-budget ${budget ? level : ""}`}>
+              <div className="db-budget-head">
+                <h2>Monthly budget</h2>
+                {!editing && (
+                  <button type="button" className="db-link" onClick={startEdit}>
+                    {budget ? "Change" : "Set a budget"}
+                  </button>
+                )}
+              </div>
+
+              {editing ? (
+                <form className="db-budget-form" onSubmit={submitBudget}>
+                  <span>₹</span>
+                  <input type="number" min="1" step="1" autoFocus value={draft}
+                    onChange={(e) => setDraft(e.target.value)}
+                    placeholder="e.g. 20000" aria-label="Monthly budget in rupees" />
+                  <button type="submit" className="btn kh-btn-main btn-sm">Save</button>
+                  <button type="button" className="btn btn-light btn-sm"
+                    onClick={() => setEditing(false)}>Cancel</button>
+                  {budget && (
+                    <button type="button" className="db-link danger"
+                      onClick={clearBudget}>Remove</button>
+                  )}
+                </form>
+              ) : budget ? (
+                <>
+                  <div className="db-meter" role="progressbar" aria-valuemin={0}
+                    aria-valuemax={100} aria-valuenow={Math.min(Math.round(used), 100)}>
+                    <i style={{ width: ready ? `${Math.min(used, 100)}%` : "0%" }} />
+                  </div>
+                  <p className="db-budget-text">
+                    <b>{rupees(stats.thisTotal)}</b> of {rupees(budget)} used ({Math.round(used)}%)
+                  </p>
+                  {level === "warn" && (
+                    <p className="db-alert warn">
+                      ⚠️ You have used {Math.round(used)}% of your budget. Only {rupees(budget - stats.thisTotal)} left this month.
+                    </p>
+                  )}
+                  {level === "over" && (
+                    <p className="db-alert over">
+                      🚨 You are {rupees(stats.thisTotal - budget)} over your monthly budget.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="db-budget-text">
+                  Set a monthly limit and Kharcha will warn you before you cross it.
+                </p>
+              )}
+
+              {budgetError && <p className="db-alert over">{budgetError}</p>}
             </div>
 
             <div className="row g-4">

@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { isLoggedIn, logout } from "../api/expenseApi";
+import { getUser, isLoggedIn, logout } from "../api/expenseApi";
 import "./Home.css";
 
 const CATEGORIES = [
@@ -26,7 +26,7 @@ const WORDS = ["food", "rent", "travel", "bills", "fun"];
 const COINS = ["🪙", "💸", "🧾", "💰", "🪙", "💸", "🧾", "💰"];
 
 const CHIPS = [
-  { text: "Chai ₹20", cls: "chip-a" },
+ 
   { text: "Metro ₹45", cls: "chip-b" },
   { text: "Netflix ₹199", cls: "chip-c" },
   { text: "Groceries ₹1,240", cls: "chip-d" },
@@ -89,6 +89,8 @@ function useReveal() {
 export default function Home() {
   const navigate = useNavigate();
   const loggedIn = isLoggedIn();
+  const firstName = getUser()?.name?.split(" ")[0];
+  const initial = firstName ? firstName[0].toUpperCase() : "?";
   const [ready, setReady] = useState(false);
   const [word, setWord] = useState(0);
   const total = useCountUp(TOTAL);
@@ -144,22 +146,30 @@ export default function Home() {
               <span className="navbar-toggler-icon" />
             </button>
             <div className="collapse navbar-collapse" id="nav">
-              <ul className="navbar-nav ms-auto align-items-md-center gap-md-3">
+            <ul className="navbar-nav ms-auto align-items-md-center gap-md-3">
                 <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
                 <li className="nav-item"><Link className="nav-link" to="/expenses">Expenses</Link></li>
                 {loggedIn && (
                   <li className="nav-item"><Link className="nav-link" to="/dashboard">Dashboard</Link></li>
                 )}
+                {loggedIn && firstName && (
+                  <li className="nav-item">
+                    <span className="kh-user">
+                      <span className="kh-avatar" aria-hidden="true">{initial}</span>
+                      Hi, {firstName}
+                    </span>
+                  </li>
+                )}
                 <li className="nav-item">
-             {loggedIn ? (
-                <button type="button" className="btn kh-btn-dark btn-sm"
-                  onClick={() => { logout(); navigate("/login"); }}>
-                  Log out
-                </button>
+                  {loggedIn ? (
+                    <button type="button" className="btn kh-btn-dark btn-sm"
+                      onClick={() => { logout(); navigate("/login"); }}>
+                      Log out
+                    </button>
                   ) : (
-                <Link className="btn kh-btn-dark btn-sm" to="/login">Log in</Link>
-                    )}
-                 </li>
+                    <Link className="btn kh-btn-dark btn-sm" to="/login">Log in</Link>
+                  )}
+                </li>
               </ul>
             </div>
           </div>

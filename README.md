@@ -20,6 +20,8 @@ A full-stack expense tracker where you can create an account, log your spending,
 - Passwords are stored hashed with BCrypt
 - Data stored in MySQL through a REST API
 - Dashboard with a 6-month spending bar chart and a category donut you can switch month by month
+- Monthly budget with a progress bar and a yellow/red warning as you approach or pass your limit
+- Email alert to your registered address the first time you go over budget each month (sent through the Brevo email API)
 
 ## Tech Stack
 
@@ -28,6 +30,7 @@ A full-stack expense tracker where you can create an account, log your spending,
 | Frontend | React (Vite), Bootstrap, React Router, Axios |
 | Backend | Java 17, Spring Boot, Spring Data JPA, Spring Security (JWT), REST APIs |
 | Database | MySQL |
+| Email | Brevo transactional email API |
 
 ## API Endpoints
 
@@ -41,8 +44,18 @@ Authentication endpoints are open. All expense endpoints need a login token in t
 | POST | `/api/expenses` | Add an expense |
 | PUT | `/api/expenses/{id}` | Update an expense |
 | DELETE | `/api/expenses/{id}` | Delete an expense |
+| GET | `/api/budget` | Get your monthly budget |
+| PUT | `/api/budget` | Set or change your monthly budget |
+| DELETE | `/api/budget` | Remove your monthly budget |
 
 ## Getting Started
+
+To enable the over-budget email alert, also add your Brevo details to the same file. Without them the app still works, it just skips the emails:
+
+properties
+brevo.api-key=YOUR_BREVO_API_KEY
+brevo.sender-email=YOUR_VERIFIED_SENDER_EMAIL
+brevo.sender-name=Kharcha
 
 ### Prerequisites
 
@@ -86,7 +99,6 @@ Open `http://localhost:5173`, create an account and add your first expense.
 
 ## Roadmap
 
-- Monthly budget with warnings
 - Deployment
 
 ## Author

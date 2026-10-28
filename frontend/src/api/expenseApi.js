@@ -89,3 +89,21 @@ export async function updateExpense(id, data) {
 export async function deleteExpense(id) {
   await API.delete(`/expenses/${id}`);
 }
+
+
+/* ---------- budget ---------- */
+
+export async function getBudget() {
+  const res = await API.get("/budget");
+  const limit = res.data.monthlyLimit;
+  return limit === null || limit === undefined ? null : Number(limit);
+}
+
+export async function saveBudget(monthlyLimit) {
+  const res = await API.put("/budget", { monthlyLimit });
+  return Number(res.data.monthlyLimit);
+}
+
+export async function removeBudget() {
+  await API.delete("/budget");
+}

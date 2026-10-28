@@ -5,7 +5,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const loggedIn = isLoggedIn();
   const firstName = getUser()?.name?.split(" ")[0];
-
+  const initial = firstName ? firstName[0].toUpperCase() : "?";
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -29,7 +29,12 @@ export default function Navbar() {
             {loggedIn ? (
               <>
                 {firstName && (
-                  <li className="nav-item"><span className="nav-link">Hi, {firstName}</span></li>
+                  <li className="nav-item">
+                    <span className="kh-user">
+                      <span className="kh-avatar" aria-hidden="true">{initial}</span>
+                      Hi, {firstName}
+                    </span>
+                  </li>
                 )}
                 <li className="nav-item">
                   <button type="button" className="btn kh-btn-dark btn-sm" onClick={handleLogout}>

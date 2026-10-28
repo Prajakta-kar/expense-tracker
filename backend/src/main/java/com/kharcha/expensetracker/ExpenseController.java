@@ -17,10 +17,13 @@ public class ExpenseController {
 
     private final ExpenseRepository repo;
     private final UserRepository users;
+    private final BudgetAlertService alerts;
 
-    public ExpenseController(ExpenseRepository repo, UserRepository users) {
+    public ExpenseController(ExpenseRepository repo, UserRepository users,
+                             BudgetAlertService alerts) {
         this.repo = repo;
         this.users = users;
+        this.alerts = alerts;
     }
 
     private Long currentUserId(Jwt jwt) {
@@ -37,16 +40,20 @@ public class ExpenseController {
     @PostMapping
     public Expense create(@Valid @RequestBody Expense expense,
                           @AuthenticationPrincipal Jwt jwt) {
+        Long userId = currentUserId(jwt);
         expense.setId(null);
-        expense.setUserId(currentUserId(jwt));
-        return repo.save(expense);
+        expense.setUserId(userId);
+        Expense saved = repo.save(expense);
+        alerts.check(userId);
+        return saved;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Expense> update(@PathVariable Long id,
                                           @Valid @RequestBody Expense updated,
                                           @AuthenticationPrincipal Jwt jwt) {
-        Optional<Expense> found = repo.findByIdAndUserId(id, currentUserId(jwt));
+        Long userId = currentUserId(jwt);
+        Optional<Expense> found = repo.findByIdAndUserId(id, userId);
         if (found.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -56,7 +63,9 @@ public class ExpenseController {
         e.setCategory(updated.getCategory());
         e.setDate(updated.getDate());
         e.setNote(updated.getNote());
-        return ResponseEntity.ok(repo.save(e));
+        Expense saved = repo.save(e);
+        alerts.check(userId);
+        return ResponseEntity.ok(saved);
     }
 
     @DeleteMapping("/{id}")

@@ -293,3 +293,76 @@
 @media (prefers-reduced-motion: reduce) {
   .hm-orbit { animation: none; }
 }
+
+/* profile badge in the navbar */
+.kh-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+.kh-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  background: var(--violet);
+  color: #fff;
+}
+.hm-hero .kh-user { color: #fff; }
+.hm-hero .kh-avatar { background: var(--sun); color: var(--ink); }
+
+
+
+/* the mobile menu sits inside the glass bar, so it needs no box of its own */
+.hm-hero .navbar-collapse.show,
+.hm-hero .navbar-collapse.collapsing {
+  background: transparent;
+  padding: 0.5rem 0 0.25rem;
+  margin-top: 0;
+}
+
+/* full-width frosted glass navbar attached to the top */
+.hm-hero .kh-nav {
+  padding: 0.65rem 0;
+  background: rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 20px rgba(10, 5, 60, 0.2);
+}
+
+/* the mobile menu opens inside the glass bar */
+.hm-hero .navbar-collapse.show,
+.hm-hero .navbar-collapse.collapsing {
+  background: transparent;
+  padding: 0.5rem 0 0.25rem;
+  margin-top: 0;
+}
+
+/* logo to the far left, menu to the far right */
+.hm-hero .kh-nav > .container {
+  max-width: none;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+@media (max-width: 767px) {
+  .hm-hero .kh-nav > .container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+/* move the donut lower, away from the navbar (large screens only) */
+@media (min-width: 992px) {
+  .hm-hero .hm-card {
+    position: relative;
+    top: 4.5rem;
+  }
+}
