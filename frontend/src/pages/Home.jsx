@@ -39,9 +39,10 @@ const STEPS = [
 ];
 
 const FEATURES = [
-  { icon: "⚡", cls: "f1", title: "Add in seconds", text: "Title, amount, category, done. Edit or delete any entry later." },
-  { icon: "🎯", cls: "f2", title: "See the pattern", text: "Totals by category and by month show where your money actually goes." },
-  { icon: "🔔", cls: "f3", title: "Stay under budget", text: "Set a monthly limit and get a warning before you cross it." },
+  { icon: "📊", cls: "f1", title: "Dashboard charts", text: "See your spending by month and by category, with a donut you can switch month by month." },
+  { icon: "🔔", cls: "f2", title: "Budget alerts", text: "Set a monthly limit and get a warning on screen, plus an email the first time you go over." },
+  { icon: "🔒", cls: "f3", title: "Private accounts", text: "Log in securely. Every account sees only its own expenses." },
+  { icon: "⚡", cls: "f4", title: "Fast to use", text: "Add, edit or delete an expense in seconds, and filter by category." },
 ];
 
 function useCountUp(target, ms = 1600) {
@@ -260,10 +261,24 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="container hm-show">
+           <h2 className="hm-h2 hm-reveal">See it in action</h2>
+           <p className="hm-lead hm-reveal" style={{ "--d": 1 }}>
+             Your spending, charts and budget on one dashboard.
+           </p>
+           <div className="hm-frame hm-reveal" style={{ "--d": 2 }}>
+             <div className="hm-frame-bar" aria-hidden="true">
+               <i /><i /><i />
+               <span>kharcha / dashboard</span>
+             </div>
+             <img src="/dashboard.png" loading="lazy"
+               alt="Kharcha dashboard with a monthly chart, category donut and budget card" />
+           </div>
+         </section>
       <section className="container hm-feats">
         <div className="row g-4">
           {FEATURES.map((f, i) => (
-            <div key={f.title} className="col-md-4 hm-reveal" style={{ "--d": i }}>
+            <div key={f.title} className="col-md-6 col-lg-3 hm-reveal" style={{ "--d": i }}>
               <div className={`hm-feat ${f.cls}`}>
                 <span className="hm-feat-icon">{f.icon}</span>
                 <h3>{f.title}</h3>
@@ -281,7 +296,12 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="kh-footer container">Kharcha · Built with React and Spring Boot</footer>
+      <footer className="kh-footer">
+           Kharcha · Built with React and Spring Boot ·{" "}
+           <a href="https://github.com/Prajakta-kar/expense-tracker" target="_blank" rel="noreferrer">
+             View the code on GitHub
+           </a>
+         </footer>
     </div>
   );
 }

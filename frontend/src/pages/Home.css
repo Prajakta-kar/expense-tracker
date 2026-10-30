@@ -366,3 +366,34 @@
     top: 4.5rem;
   }
 }
+
+/* "See it in action" showcase */
+.hm-show { padding: 3rem 0 1rem; }
+.hm-frame {
+  max-width: 980px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(91, 61, 245, 0.25);
+  box-shadow: 0 0 0 8px rgba(91, 61, 245, 0.08), 0 30px 70px rgba(91, 61, 245, 0.28);
+}
+.hm-frame-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1rem;
+  background: #eef1fb;
+  border-bottom: 1px solid #e1e6f5;
+}
+.hm-frame-bar i { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: #ff5c8a; }
+.hm-frame-bar i:nth-child(2) { background: #ffc233; }
+.hm-frame-bar i:nth-child(3) { background: #2ed3a6; }
+.hm-frame-bar span { margin-left: 0.75rem; font-size: 0.8rem; color: #6b78a0; }
+.hm-frame img { display: block; width: 100%; height: auto; }
+
+/* fourth feature card and footer */
+.f4 { background: #ffdde7; }
+.kh-footer { text-align: center; }
+.kh-footer a { color: var(--violet); font-weight: 500; text-decoration: none; }
+.kh-footer a:hover { text-decoration: underline; }
