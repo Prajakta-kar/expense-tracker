@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:8081/api" });
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8081/api",
+});
 
 const TOKEN_KEY = "kharcha-token";
 const USER_KEY = "kharcha-user";
