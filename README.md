@@ -2,6 +2,13 @@
 
 A full-stack expense tracker where you can create an account, log your spending, sort it by category and see where your money goes. Built with React, Spring Boot and MySQL.
 
+## Live Demo
+
+- Website: https://expense-tracker-rho-lovat-63.vercel.app
+- Demo login: `YOUR_DEMO_EMAIL` / `YOUR_DEMO_PASSWORD`
+
+> The project runs on free hosting. The backend sleeps when idle, so the first load can take about a minute. The free database also powers off when idle, so if the site shows errors, please try again later.
+
 ## Screenshots
 
 ![Home page](docs/screenshots/home.png)
@@ -31,6 +38,7 @@ A full-stack expense tracker where you can create an account, log your spending,
 | Backend | Java 17, Spring Boot, Spring Data JPA, Spring Security (JWT), REST APIs |
 | Database | MySQL |
 | Email | Brevo transactional email API |
+| Hosting | Vercel (frontend), Render (backend), Aiven (MySQL) |
 
 ## API Endpoints
 
